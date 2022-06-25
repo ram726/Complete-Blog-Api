@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import com.blog.ram.entities.Category;
@@ -17,8 +18,6 @@ import com.blog.ram.repositories.CategoryRepo;
 import com.blog.ram.repositories.PostRepo;
 import com.blog.ram.repositories.UserRepo;
 import com.blog.ram.service.PostService;
-
-import net.bytebuddy.asm.Advice.This;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -84,9 +83,18 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getALlPost() {
+	public List<PostDto> getALlPost(Integer pageNumber,Integer pageSize) {
 		
-		List<Post>posts =this.postRepo.findAll();
+//		int pageSize=5;
+//		int pageNumber=1;
+
+		Pageable pageable=PageRequest.of(pageNumber, pageSize);
+		
+//		List<Post>posts =this.postRepo.findAll();
+		Page<Post>pagePost =this.postRepo.findAll(pageable);
+		
+		List<Post>posts=pagePost.getContent();
+		
 		List<PostDto>postDtos=posts.stream().map((post)->this.mapper.map(post, PostDto.class)).collect(Collectors.toList());
 		
 		return postDtos;
