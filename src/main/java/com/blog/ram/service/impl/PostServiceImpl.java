@@ -1,5 +1,6 @@
 package com.blog.ram.service.impl;
 
+import java.sql.PseudoColumnUsage;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,14 +85,25 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostResponse getALlPost(Integer pageNumber,Integer pageSize) {
+	public PostResponse getALlPost(Integer pageNumber,Integer pageSize, String sortBy, String sortDir) {
 		
 //		int pageSize=5;
 //		int pageNumber=1;
 
-		Pageable pageable=PageRequest.of(pageNumber, pageSize);
-		
+//		Pageable pageable=PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).descending());		
 //		List<Post>posts =this.postRepo.findAll();
+		
+//		Sort sort=(sortDir.equalsIgnoreCase("asc"))?Sort.by(sortBy).ascending():Sort.by(sortBy).ascending();
+		Sort sort=null;
+		if(sortDir.equalsIgnoreCase("asc")) {
+			sort=Sort.by(sortBy).ascending();
+		}
+		else
+		{
+			sort=Sort.by(sortBy).descending();
+		}
+		
+		Pageable pageable=PageRequest.of(pageNumber, pageSize,sort);
 		Page<Post>pagePost =this.postRepo.findAll(pageable);
 		
 		List<Post>posts=pagePost.getContent();
