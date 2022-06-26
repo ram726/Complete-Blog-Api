@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blog.ram.config.AppConstants;
 import com.blog.ram.payloads.ApiResponse;
 import com.blog.ram.payloads.PostDto;
 import com.blog.ram.payloads.PostResponse;
@@ -55,10 +56,10 @@ public class PostController {
 	//get all post
 	@GetMapping("/posts")
 	public ResponseEntity<PostResponse>getAllPost(
-			@RequestParam(value = "pageNumber",defaultValue = "0",required = false)Integer pageNumber,
-			@RequestParam(value = "pageSize",defaultValue = "4",required = false)Integer pageSize,
-			@RequestParam(value = "sortBy",defaultValue = "postIdInteger",required = false) String sortBy,
-			@RequestParam(value = "sortDir",defaultValue = "asc",required = false)String sortDir
+			@RequestParam(value = "pageNumber",defaultValue = AppConstants.PAGE_NUMBER,required = false)Integer pageNumber,
+			@RequestParam(value = "pageSize",defaultValue =AppConstants.PAGE_SIZE,required = false)Integer pageSize,
+			@RequestParam(value = "sortBy",defaultValue =AppConstants.SORT_BY,required = false) String sortBy,
+			@RequestParam(value = "sortDir",defaultValue = AppConstants.SORT_DIR,required = false)String sortDir
 			){
 		
 //		List<PostDto>postDtos=this.postService.getALlPost(pageNumber,pageSize);
