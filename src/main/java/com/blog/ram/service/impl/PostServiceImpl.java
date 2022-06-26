@@ -14,6 +14,7 @@ import com.blog.ram.entities.Post;
 import com.blog.ram.entities.User;
 import com.blog.ram.exceptions.ResourceNotFoundException;
 import com.blog.ram.payloads.PostDto;
+import com.blog.ram.payloads.PostResponse;
 import com.blog.ram.repositories.CategoryRepo;
 import com.blog.ram.repositories.PostRepo;
 import com.blog.ram.repositories.UserRepo;
@@ -83,7 +84,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getALlPost(Integer pageNumber,Integer pageSize) {
+	public PostResponse getALlPost(Integer pageNumber,Integer pageSize) {
 		
 //		int pageSize=5;
 //		int pageNumber=1;
@@ -97,7 +98,15 @@ public class PostServiceImpl implements PostService {
 		
 		List<PostDto>postDtos=posts.stream().map((post)->this.mapper.map(post, PostDto.class)).collect(Collectors.toList());
 		
-		return postDtos;
+		PostResponse postResponse=new PostResponse();
+		postResponse.setContentDtos(postDtos);
+		postResponse.setPageNumber(pagePost.getNumber());
+		postResponse.setPageSize(pagePost.getSize());
+		postResponse.setTotalElements(pagePost.getTotalElements());
+		postResponse.setTotalPages(pagePost.getTotalPages());
+		postResponse.setLastPage(pagePost.isLast());
+		
+		return postResponse;
 	}
 	@Override
 	public PostDto getPostById(Integer postId) {
